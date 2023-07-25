@@ -48,7 +48,9 @@ export class BaseController {
       return res.status(this.code).send(result)
     }
   }
-  responseSuccess(res: any) {
+  responseSuccess(data, message, res: any) {
+    this.setData(data)
+    this.setMessage(message)
     return this.getResponse(res, true)
   }
 

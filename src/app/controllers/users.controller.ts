@@ -13,12 +13,9 @@ export class UsersController extends BaseController {
 
   @Get('/list')
   async getUser(@Req() req: any, @Res() res: any, next: NextFunction) {
-    try {
-      const findAllUsersData = await this.userRepository.getAll()
-      return this.setData(findAllUsersData).setMessage('Success').responseSuccess(res)
-    } catch (error) {
-      return this.setMessage('Error').responseErrors(res)
-    }
+    const findAllUsersData = await this.userRepository.getAll()
+
+    return this.responseSuccess(findAllUsersData, 'Success', res)
   }
 }
 
