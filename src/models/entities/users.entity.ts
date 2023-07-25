@@ -7,6 +7,7 @@ import {
   Table,
   UpdatedAt,
   DataType,
+  Default,
 } from 'sequelize-typescript'
 
 @Table({
@@ -26,6 +27,7 @@ export default class User extends Model<User> {
   @Column
   name!: string
 
+  @Default(UserRoleEnum.USER)
   @Column(DataType.ENUM({ values: Object.values(UserRoleEnum) }))
   role: UserRoleEnum
 
