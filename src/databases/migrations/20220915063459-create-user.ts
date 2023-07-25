@@ -31,6 +31,7 @@ module.exports = {
         field: 'role',
         type: Sequelize.ENUM('user', 'admin'),
         allowNull: false,
+        defaultValue: 'user',
       },
 
       phoneNumber: {
@@ -44,7 +45,6 @@ module.exports = {
         type: Sequelize.STRING(255),
         field: 'address',
         allowNull: false,
-        unique: true,
       },
 
       email: {
