@@ -34,3 +34,13 @@ export class CreateUserDto {
   @isValidEmail()
   email: string
 }
+
+export class UserLoginDto {
+  @IsNotEmpty()
+  @IsString()
+  userName: string
+
+  @IsNotEmpty()
+  @IsString()
+  password: string
+}

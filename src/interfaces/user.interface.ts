@@ -6,3 +6,8 @@ export interface CreateUserInterface {
   address: string
   email: string
 }
+
+export interface UserLoginInterface {
+  userName: string
+  password: string
+}
