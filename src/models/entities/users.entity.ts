@@ -1,4 +1,13 @@
-import { Column, CreatedAt, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript'
+import { UserRoleEnum } from '@enum/users.enum'
+import {
+  Column,
+  CreatedAt,
+  Model,
+  PrimaryKey,
+  Table,
+  UpdatedAt,
+  DataType,
+} from 'sequelize-typescript'
 
 @Table({
   tableName: 'users',
@@ -9,13 +18,25 @@ export default class User extends Model<User> {
   id!: number
 
   @Column
-  name!: string
-
-  @Column
-  email!: string
+  userName!: string
 
   @Column
   password!: string
+
+  @Column
+  name!: string
+
+  @Column(DataType.ENUM({ values: Object.values(UserRoleEnum) }))
+  role: UserRoleEnum
+
+  @Column
+  phoneNumber!: string
+
+  @Column
+  address!: string
+
+  @Column
+  email!: string
 
   @CreatedAt
   @Column

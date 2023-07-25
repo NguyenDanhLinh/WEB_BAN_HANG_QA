@@ -8,22 +8,50 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
 
-      name: {
+      userName: {
         type: Sequelize.STRING(255),
-        field: 'name',
+        field: 'user_name',
         allowNull: false,
-      },
-
-      email: {
-        type: Sequelize.STRING(255),
-        field: 'email',
-        allowNull: false,
+        unique: true,
       },
 
       password: {
         type: Sequelize.TEXT,
         field: 'password',
         allowNull: false,
+      },
+
+      name: {
+        type: Sequelize.STRING(255),
+        field: 'name',
+        allowNull: false,
+      },
+
+      role: {
+        field: 'role',
+        type: Sequelize.ENUM('user', 'admin'),
+        allowNull: false,
+      },
+
+      phoneNumber: {
+        field: 'phone_number',
+        type: Sequelize.STRING(255),
+        allowNull: false,
+        unique: true,
+      },
+
+      address: {
+        type: Sequelize.STRING(255),
+        field: 'address',
+        allowNull: false,
+        unique: true,
+      },
+
+      email: {
+        type: Sequelize.STRING(255),
+        field: 'email',
+        allowNull: false,
+        unique: true,
       },
 
       createdAt: {
@@ -38,14 +66,6 @@ module.exports = {
         field: 'updated_at',
       },
     })
-
-    await Promise.all([
-      QueryInterface.addIndex('users', ['email'], {
-        name: ['users', 'email', 'unique'].join('_'),
-        indicesType: 'unique',
-        type: 'unique',
-      }),
-    ])
   },
 
   down: async (queryInterface) => queryInterface.dropTable('users'),
