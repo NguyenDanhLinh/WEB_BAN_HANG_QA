@@ -4,7 +4,7 @@ const users = [
   {
     id: 1,
     user_name: 'linh2001',
-    password: '$2b$10$uAAaPu7svUAz8XLjEApZoOTL3/zYUTAj1VSz82HRozhWpJdbT7y1S',
+    password: '$2b$10$WfEZajtQa.vGoJ2CWHReGOchErJYxsSDN1IJMgD6HA.3CIz7n87Bi',
     name: 'nguyen danh linh',
     role: 'admin',
     phone_number: '032932311',
