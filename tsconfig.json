@@ -34,7 +34,8 @@
       "@repositories/*": ["app/repositories/*"],
       "@utils/*": ["common/utils/*"],
       "@services/*": ["app/services/*"],
-      "@vendor-services/*": ["src/vendor-services/*"]
+      "@vendor-services/*": ["src/vendor-services/*"],
+      "@common/*": ["common/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.json", "src/tests/*.test.ts", "src/tests/**/*.test.ts"],
