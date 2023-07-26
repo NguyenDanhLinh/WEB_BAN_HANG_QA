@@ -61,6 +61,10 @@ class CategoryServices {
 
     return this.categoryRepository.getListCategories(whereClause, skip, limit, sort)
   }
+
+  async deleteCategory(id: number) {
+    return this.categoryRepository.deleteById(id)
+  }
 }
 
 export default CategoryServices
