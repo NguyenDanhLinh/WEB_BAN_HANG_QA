@@ -32,6 +32,7 @@ export const env = {
     logDir: getOsEnv('LOG_DIR'),
     fileSystemDriver: getOsEnv('FILESYSTEM_DRIVER'),
     disksDir: getOsEnv('DISKS_DIR') || '/public/uploads',
+    ipfsUrl: getOsEnv('IPFS_URL'),
   },
   log: {
     level: getOsEnv('LOG_LEVEL'),
@@ -88,5 +89,22 @@ export const env = {
     defaultRegion: getOsEnv('AWS_S3_REGION'),
     accessKeyId: getOsEnv('AWS_S3_ACCESS_KEY_ID'),
     secretAccessKey: getOsEnv('AWS_S3_SECRET_ACCESS_KEY'),
+  },
+  awsS3: {
+    bucketName: getOsEnv('AWS_S3_BUCKET'),
+    defaultRegion: getOsEnv('AWS_S3_REGION'),
+    accessKeyId: getOsEnv('AWS_S3_ACCESS_KEY_ID'),
+    secretAccessKey: getOsEnv('AWS_S3_SECRET_ACCESS_KEY'),
+  },
+  filebaseS3: {
+    bucketName: getOsEnv('FILEBASE_S3_BUCKET'),
+    defaultRegion: getOsEnv('FILEBASE_S3_REGION'),
+    accessKeyId: getOsEnv('FILEBASE_S3_ACCESS_KEY_ID'),
+    secretAccessKey: getOsEnv('FILEBASE_S3_SECRET_ACCESS_KEY'),
+    s3Endpoint: getOsEnv('FILEBASE_S3_URL_ENDPOINT'),
+  },
+  mail: {
+    email: getOsEnvOptional('MAIL_EMAIL'),
+    password: getOsEnvOptional('MAIL_PASSWORD'),
   },
 }
