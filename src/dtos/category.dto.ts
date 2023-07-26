@@ -23,3 +23,10 @@ export class UpdateCategoryDto {
   @IsString()
   name: string
 }
+
+export class DeleteCategoryDto {
+  @IsNotEmpty()
+  @IsString()
+  @IsAlreadyExist('categories', 'id')
+  id: number
+}
