@@ -3,6 +3,7 @@ import { ModelCtor } from 'sequelize-typescript'
 import DB from '@models/index'
 import User from '@models/entities/users.entity'
 import Category from '@models/entities/categories.entity'
+import Item from '@models/entities/items.entity'
 
 export function getModelFromTableName(tableName: string): ModelCtor | undefined {
   let item = undefined
@@ -12,6 +13,9 @@ export function getModelFromTableName(tableName: string): ModelCtor | undefined 
       break
     case Category.tableName:
       item = DB.sequelize.model(Category)
+      break
+    case Item.tableName:
+      item = DB.sequelize.model(Item)
       break
     default:
       item = undefined
