@@ -17,7 +17,7 @@ import CategoryServices from '@services/category.service'
 import { createFileUploadOption } from '@lib/file'
 import { FileEnum } from '@enum/file.enum'
 import { File } from '@interfaces/file.interface'
-import { CreateCategoryDto, UpdateCategoryDto } from 'dtos/category.dto'
+import { CreateCategoryDto, DeleteCategoryDto, UpdateCategoryDto } from 'dtos/category.dto'
 import { PaginationQueryDto } from 'dtos/pagination.dto'
 import { GetPagination } from '@decorators/get.pagination.decorator'
 import { Pagination } from '@interfaces/pagination.interface'
@@ -74,6 +74,15 @@ export class CategoryController extends BaseController {
     const result = await this.categoryServices.getListCategories(pagination)
 
     return this.responseSuccess(result, 'Success', res)
+  }
+
+  @UseBefore(AdminMiddleware)
+  @Post('/delete')
+  @UseBefore(validationMiddleware(DeleteCategoryDto, 'body'))
+  async deleteCategory(@Body() body: DeleteCategoryDto, @Res() res: Response) {
+    await this.categoryServices.deleteCategory(body.id)
+
+    return this.responseSuccess([], 'Success', res)
   }
 }
 
