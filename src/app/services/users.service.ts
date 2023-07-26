@@ -6,10 +6,11 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { HttpException } from '@exceptions/http.exception'
 import { env } from '@env'
+import CronServices from 'vendor-services/cronJob.service'
 
 @Service()
 class UserServices {
-  constructor(protected userRepository: UserRepository) {}
+  constructor(protected userRepository: UserRepository, protected cronServices: CronServices) {}
 
   async getAll() {
     return this.userRepository.getAll()
@@ -34,6 +35,13 @@ class UserServices {
     delete user.password
 
     return jwt.sign(user, env.auth.jwtSecret)
+  }
+
+  async testConLog() {
+    await this.cronServices.createScheduleLog(
+      '2023-07-25 08:31:00 +00:00	',
+      this.userRepository.getAll(),
+    )
   }
 }
 
