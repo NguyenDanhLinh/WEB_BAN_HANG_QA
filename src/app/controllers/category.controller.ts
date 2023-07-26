@@ -18,6 +18,10 @@ import { createFileUploadOption } from '@lib/file'
 import { FileEnum } from '@enum/file.enum'
 import { File } from '@interfaces/file.interface'
 import { CreateCategoryDto, UpdateCategoryDto } from 'dtos/category.dto'
+import { PaginationQueryDto } from 'dtos/pagination.dto'
+import { GetPagination } from '@decorators/get.pagination.decorator'
+import { Pagination } from '@interfaces/pagination.interface'
+import { Response } from 'express'
 
 @JsonController('/category')
 @Service()
@@ -62,6 +66,14 @@ export class CategoryController extends BaseController {
     await this.categoryServices.updateCategory(file, body)
 
     return this.responseSuccess([], 'Success', res)
+  }
+
+  @Get('/list')
+  @UseBefore(validationMiddleware(PaginationQueryDto, 'query'))
+  async getListCategories(@GetPagination() pagination: Pagination, @Res() res: Response) {
+    const result = await this.categoryServices.getListCategories(pagination)
+
+    return this.responseSuccess(result, 'Success', res)
   }
 }
 
