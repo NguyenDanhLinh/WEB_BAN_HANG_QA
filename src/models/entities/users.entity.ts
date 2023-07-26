@@ -8,6 +8,7 @@ import {
   UpdatedAt,
   DataType,
   Default,
+  AutoIncrement,
 } from 'sequelize-typescript'
 
 @Table({
@@ -15,6 +16,7 @@ import {
 })
 export default class User extends Model<User> {
   @PrimaryKey
+  @AutoIncrement
   @Column
   id!: number
 
