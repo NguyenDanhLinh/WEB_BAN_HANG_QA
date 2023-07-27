@@ -10,30 +10,29 @@ import {
   AutoIncrement,
   ForeignKey,
   BelongsTo,
-  HasMany,
 } from 'sequelize-typescript'
 import Category from './categories.entity'
 import User from './users.entity'
 import Voucher from './voucher.entity'
 import Item from './items.entity'
-import { StatusOderEnum } from '@enum/order.enum'
-import OrderItem from './order_item.entity'
+import Order from './order.entity'
+import FlashSale from './flash_sale.entity'
 
 @Table({
-  tableName: 'orders',
+  tableName: 'order_item',
 })
-export default class Order extends Model<Order> {
+export default class OrderItem extends Model<OrderItem> {
   @PrimaryKey
   @AutoIncrement
   @Column
   id!: number
 
   @Column
-  @ForeignKey(() => User)
-  userId!: number
+  @ForeignKey(() => Order)
+  orderId!: number
 
-  @BelongsTo(() => User, 'userId')
-  user: User
+  @BelongsTo(() => Order, 'orderId')
+  order: Order
 
   @Column
   @ForeignKey(() => Item)
@@ -42,15 +41,15 @@ export default class Order extends Model<Order> {
   @BelongsTo(() => Item, 'itemId')
   item: Item
 
-  @Default(StatusOderEnum.PENDING)
-  @Column(DataType.ENUM({ values: Object.values(StatusOderEnum) }))
-  status: StatusOderEnum
+  @Column
+  quantity!: number
 
   @Column
-  totalPrice!: string
+  @ForeignKey(() => FlashSale)
+  flashSaleId!: number
 
-  @HasMany(() => OrderItem, 'orderId')
-  orderItem: OrderItem[]
+  @BelongsTo(() => FlashSale, 'flashSaleId')
+  flashSale: FlashSale
 
   @CreatedAt
   @Column
