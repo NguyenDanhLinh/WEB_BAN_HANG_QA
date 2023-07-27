@@ -15,6 +15,7 @@ import {
 import Category from './categories.entity'
 import Cart from './carts.entity'
 import FlashSaleItem from './flashSale_item.entity'
+import Order from './order.entity'
 
 @Table({
   tableName: 'items',
@@ -64,6 +65,9 @@ export default class Item extends Model<Item> {
 
   @HasMany(() => FlashSaleItem, 'itemId')
   flashSaleItem: FlashSaleItem[]
+
+  @HasMany(() => Order, 'itemId')
+  order: Order[]
 
   @CreatedAt
   @Column
