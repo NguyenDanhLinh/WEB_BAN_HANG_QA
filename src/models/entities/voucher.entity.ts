@@ -10,8 +10,10 @@ import {
   AutoIncrement,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript'
 import Category from './categories.entity'
+import Order from './order.entity'
 
 @Table({
   tableName: 'voucher',
@@ -44,6 +46,9 @@ export default class Voucher extends Model<Voucher> {
 
   @Column
   inventoryNumber!: number
+
+  @HasMany(() => Order, 'itemId')
+  order: Order[]
 
   @CreatedAt
   @Column

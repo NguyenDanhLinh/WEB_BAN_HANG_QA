@@ -10,6 +10,7 @@ import Cart from '@models/entities/carts.entity'
 import FlashSale from '@models/entities/flash_sale.entity'
 import FlashSaleItem from '@models/entities/flashSale_item.entity'
 import Order from '@models/entities/order.entity'
+import OrderItem from '@models/entities/order_item.entity'
 
 export function getModelFromTableName(tableName: string): ModelCtor | undefined {
   let item = undefined
@@ -40,6 +41,9 @@ export function getModelFromTableName(tableName: string): ModelCtor | undefined 
       break
     case Order.tableName:
       item = DB.sequelize.model(Order)
+      break
+    case OrderItem.tableName:
+      item = DB.sequelize.model(OrderItem)
       break
     default:
       item = undefined
