@@ -4,7 +4,6 @@
 // import validationMiddleware from '@middlewares/validation.middleware'
 // import { CreateUserDto, UserLoginDto } from 'dtos/users.dto'
 // import { AdminMiddleware } from '@middlewares/checkAdmin.middleware'
-// import CategoryServices from '@services/category.service'
 
 // @JsonController('/category')
 // @Service()
