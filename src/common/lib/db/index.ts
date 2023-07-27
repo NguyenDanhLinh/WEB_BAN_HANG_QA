@@ -5,6 +5,7 @@ import User from '@models/entities/users.entity'
 import Category from '@models/entities/categories.entity'
 import Item from '@models/entities/items.entity'
 import Voucher from '@models/entities/voucher.entity'
+import UserVoucher from '@models/entities/user_voucher.entity'
 
 export function getModelFromTableName(tableName: string): ModelCtor | undefined {
   let item = undefined
@@ -20,6 +21,9 @@ export function getModelFromTableName(tableName: string): ModelCtor | undefined 
       break
     case Voucher.tableName:
       item = DB.sequelize.model(Voucher)
+      break
+    case UserVoucher.tableName:
+      item = DB.sequelize.model(UserVoucher)
       break
     default:
       item = undefined
