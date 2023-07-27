@@ -11,6 +11,7 @@ import FlashSale from '@models/entities/flash_sale.entity'
 import FlashSaleItem from '@models/entities/flashSale_item.entity'
 import Order from '@models/entities/order.entity'
 import OrderItem from '@models/entities/order_item.entity'
+import CartItem from '@models/entities/cart_item.entity'
 
 export function getModelFromTableName(tableName: string): ModelCtor | undefined {
   let item = undefined
@@ -32,6 +33,9 @@ export function getModelFromTableName(tableName: string): ModelCtor | undefined 
       break
     case Cart.tableName:
       item = DB.sequelize.model(Cart)
+      break
+    case CartItem.tableName:
+      item = DB.sequelize.model(CartItem)
       break
     case FlashSale.tableName:
       item = DB.sequelize.model(FlashSale)
