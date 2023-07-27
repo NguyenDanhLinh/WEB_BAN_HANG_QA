@@ -10,8 +10,10 @@ import {
   AutoIncrement,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript'
 import Category from './categories.entity'
+import FlashSaleItem from './flashSale_item.entity'
 
 @Table({
   tableName: 'flash_sale',
@@ -35,6 +37,9 @@ export default class FlashSale extends Model<FlashSale> {
 
   @Column
   endDate!: Date
+
+  @HasMany(() => FlashSaleItem, 'flashSaleId')
+  flashSaleItem: FlashSaleItem[]
 
   @CreatedAt
   @Column

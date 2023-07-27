@@ -14,6 +14,7 @@ import {
 } from 'sequelize-typescript'
 import Category from './categories.entity'
 import Cart from './carts.entity'
+import FlashSaleItem from './flashSale_item.entity'
 
 @Table({
   tableName: 'items',
@@ -60,6 +61,9 @@ export default class Item extends Model<Item> {
 
   @HasMany(() => Cart, 'itemId')
   cart: Cart[]
+
+  @HasMany(() => FlashSaleItem, 'itemId')
+  flashSaleItem: FlashSaleItem[]
 
   @CreatedAt
   @Column
