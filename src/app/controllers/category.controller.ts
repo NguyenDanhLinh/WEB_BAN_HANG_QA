@@ -31,39 +31,19 @@ export class CategoryController extends BaseController {
   }
 
   @UseBefore(AdminMiddleware)
+  @UseBefore(validationMiddleware(CreateCategoryDto, 'body'))
   @Post('/create')
-  async createCategory(
-    @UploadedFiles('file', {
-      options: createFileUploadOption(
-        /\/(jpg|jpeg|png|gif)$/,
-        FileEnum.MAX_SIZE_IMAGE,
-        FileEnum.MAX_QTY_IMAGE,
-      ),
-    })
-    file: File,
-    @Body() body: CreateCategoryDto,
-    @Res() res: any,
-  ) {
-    const result = await this.categoryServices.createCategory(file, body)
+  async createCategory(@Body() body: CreateCategoryDto, @Res() res: any) {
+    const result = await this.categoryServices.createCategory(body)
 
     return this.responseSuccess(result, 'Success', res)
   }
 
   @UseBefore(AdminMiddleware)
+  @UseBefore(validationMiddleware(UpdateCategoryDto, 'body'))
   @Post('/update')
-  async updateCategory(
-    @UploadedFiles('file', {
-      options: createFileUploadOption(
-        /\/(jpg|jpeg|png|gif)$/,
-        FileEnum.MAX_SIZE_IMAGE,
-        FileEnum.MAX_QTY_IMAGE,
-      ),
-    })
-    file: File,
-    @Body() body: UpdateCategoryDto,
-    @Res() res: any,
-  ) {
-    await this.categoryServices.updateCategory(file, body)
+  async updateCategory(@Body() body: UpdateCategoryDto, @Res() res: any) {
+    await this.categoryServices.updateCategory(body)
 
     return this.responseSuccess([], 'Success', res)
   }

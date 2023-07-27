@@ -11,17 +11,25 @@ export class CreateCategoryDto {
   @IsString()
   @IsNotExist('categories', 'name')
   name: string
+
+  @IsNotEmpty()
+  @IsString()
+  img: string
 }
 
 export class UpdateCategoryDto {
   @IsNotEmpty()
-  @IsString()
+  @IsNumber()
   @IsAlreadyExist('categories', 'id')
   id: number
 
   @IsOptional()
   @IsString()
   name: string
+
+  @IsNotEmpty()
+  @IsString()
+  img: string
 }
 
 export class DeleteCategoryDto {
