@@ -10,8 +10,10 @@ import {
   AutoIncrement,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript'
 import Category from './categories.entity'
+import Cart from './carts.entity'
 
 @Table({
   tableName: 'items',
@@ -55,6 +57,9 @@ export default class Item extends Model<Item> {
 
   @BelongsTo(() => Category, 'categoryId')
   category: Category
+
+  @HasMany(() => Cart, 'itemId')
+  cart: Cart[]
 
   @CreatedAt
   @Column
