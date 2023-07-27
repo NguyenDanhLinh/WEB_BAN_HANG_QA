@@ -8,6 +8,7 @@ import Voucher from '@models/entities/voucher.entity'
 import UserVoucher from '@models/entities/user_voucher.entity'
 import Cart from '@models/entities/carts.entity'
 import FlashSale from '@models/entities/flash_sale.entity'
+import FlashSaleItem from '@models/entities/flashSale_item.entity'
 
 export function getModelFromTableName(tableName: string): ModelCtor | undefined {
   let item = undefined
@@ -32,6 +33,9 @@ export function getModelFromTableName(tableName: string): ModelCtor | undefined 
       break
     case FlashSale.tableName:
       item = DB.sequelize.model(FlashSale)
+      break
+    case FlashSaleItem.tableName:
+      item = DB.sequelize.model(FlashSaleItem)
       break
     default:
       item = undefined
