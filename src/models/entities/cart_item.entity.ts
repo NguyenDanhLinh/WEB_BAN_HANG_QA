@@ -10,32 +10,38 @@ import {
   AutoIncrement,
   ForeignKey,
   BelongsTo,
-  HasMany,
 } from 'sequelize-typescript'
 import Category from './categories.entity'
 import User from './users.entity'
 import Voucher from './voucher.entity'
 import Item from './items.entity'
-import CartItem from './cart_item.entity'
+import Cart from './carts.entity'
 
 @Table({
-  tableName: 'carts',
+  tableName: 'cart_item',
 })
-export default class Cart extends Model<Cart> {
+export default class CartItem extends Model<CartItem> {
   @PrimaryKey
   @AutoIncrement
   @Column
   id!: number
 
   @Column
-  @ForeignKey(() => User)
-  userId!: number
+  @ForeignKey(() => Cart)
+  cartId!: number
 
-  @BelongsTo(() => User, 'userId')
-  user: User
+  @BelongsTo(() => Cart, 'cartId')
+  cart: Cart
 
-  @HasMany(() => CartItem, 'cartId')
-  cartItem: CartItem[]
+  @Column
+  @ForeignKey(() => Item)
+  itemId!: number
+
+  @BelongsTo(() => Item, 'itemId')
+  item: Item
+
+  @Column
+  quantity!: number
 
   @CreatedAt
   @Column

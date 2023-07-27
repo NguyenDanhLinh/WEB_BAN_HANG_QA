@@ -1,6 +1,6 @@
 module.exports = {
   up: async (QueryInterface, Sequelize) => {
-    await QueryInterface.createTable('carts', {
+    await QueryInterface.createTable('cart_item', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -8,14 +8,30 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
 
-      userId: {
+      cartId: {
         type: Sequelize.INTEGER,
-        field: 'user_id',
+        field: 'cart_id',
         allowNull: true,
         refer: {
-          model: 'users',
+          model: 'carts',
           key: 'id',
         },
+      },
+
+      itemId: {
+        type: Sequelize.INTEGER,
+        field: 'item_id',
+        allowNull: true,
+        refer: {
+          model: 'items',
+          key: 'id',
+        },
+      },
+
+      quantity: {
+        type: Sequelize.INTEGER,
+        field: 'quantity',
+        allowNull: false,
       },
 
       createdAt: {
@@ -32,5 +48,5 @@ module.exports = {
     })
   },
 
-  down: async (queryInterface) => queryInterface.dropTable('carts'),
+  down: async (queryInterface) => queryInterface.dropTable('cart_item'),
 }
