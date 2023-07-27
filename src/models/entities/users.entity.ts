@@ -9,7 +9,9 @@ import {
   DataType,
   Default,
   AutoIncrement,
+  HasMany,
 } from 'sequelize-typescript'
+import UserVoucher from './user_voucher.entity'
 
 @Table({
   tableName: 'users',
@@ -41,6 +43,9 @@ export default class User extends Model<User> {
 
   @Column
   email!: string
+
+  @HasMany(() => UserVoucher, 'userId')
+  userVoucher: UserVoucher[]
 
   @CreatedAt
   @Column
