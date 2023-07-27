@@ -23,27 +23,11 @@ class CategoryServices {
     protected uploadToFilebaseService: UploadToFilebaseService,
   ) {}
 
-  async createCategory(file: File, body: CreateCategoryInterface) {
-    if (!file[0]) {
-      throw new HttpException(400, 'file not found')
-    }
-
-    const img = await this.uploadToFilebaseService.uploadFile(file[0])
-    body.img = img
-
+  async createCategory(body: CreateCategoryInterface) {
     return this.categoryRepository.create(body)
   }
 
-  async updateCategory(file: File, body: UpdateCategoryInterface) {
-    if (!file[0] && !body.name) {
-      throw new HttpException(400, 'info update not found')
-    }
-
-    if (file[0]) {
-      const img = await this.uploadToFilebaseService.uploadFile(file[0])
-      body.img = img
-    }
-
+  async updateCategory(body: UpdateCategoryInterface) {
     const categoryId = body.id
 
     delete body.id

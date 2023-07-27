@@ -1,6 +1,6 @@
 export interface CreateCategoryInterface {
   name: string
-  img?: string
+  img: string
 }
 
 export interface UpdateCategoryInterface {
