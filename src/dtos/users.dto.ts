@@ -3,6 +3,7 @@ import { IsAlreadyExist } from '@decorators/is.exist.decorator'
 import { isValidPhoneNumber } from '@decorators/is.phoneNumber.decorator'
 import { IsNotExist } from '@decorators/isNot.exist.decorator'
 import { IsNotEmpty, IsNumber, IsEnum, IsString } from 'class-validator'
+import { Type } from 'class-transformer'
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -43,4 +44,12 @@ export class UserLoginDto {
   @IsNotEmpty()
   @IsString()
   password: string
+}
+
+export class ReceiveVoucherDto {
+  @IsNotEmpty()
+  @IsNumber()
+  @Type(() => Number)
+  @IsAlreadyExist('voucher', 'id')
+  voucherId: number
 }
