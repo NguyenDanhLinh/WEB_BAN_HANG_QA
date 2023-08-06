@@ -1,6 +1,7 @@
 import { Service } from 'typedi'
 import { ModelCtor, Model } from 'sequelize-typescript'
 import { BaseRepositoryInterface } from './interfaces/base.repository.interface'
+import { Transaction } from 'sequelize'
 
 @Service()
 export abstract class BaseRepository<M extends Model> implements BaseRepositoryInterface {
@@ -21,6 +22,10 @@ export abstract class BaseRepository<M extends Model> implements BaseRepositoryI
 
   async findByCondition(object: Object): Promise<M> {
     return this.model.findOne(object)
+  }
+
+  async deleteByCondition(whereClause: any, transaction?: Transaction): Promise<number> {
+    return this.model.destroy({ where: whereClause, transaction })
   }
 
   async getByCondition(whereClause: any, offset: number, limit: number, orderBy: any) {
