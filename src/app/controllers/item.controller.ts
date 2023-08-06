@@ -18,6 +18,10 @@ import { createFileUploadOption } from '@lib/file'
 import { FileEnum } from '@enum/file.enum'
 import { File } from '@interfaces/file.interface'
 import { CreateItemDto, UpdateItemDto } from 'dtos/item.dto'
+import { PaginationQueryDto } from 'dtos/pagination.dto'
+import { GetPagination } from '@decorators/get.pagination.decorator'
+import { Pagination } from '@interfaces/pagination.interface'
+import { Response } from 'express'
 
 @JsonController('/items')
 @Service()
@@ -40,6 +44,14 @@ export class ItemController extends BaseController {
   @Post('/update')
   async updateItem(@Body() body: UpdateItemDto, @Res() res: any) {
     const result = await this.itemServices.updateItem(body)
+
+    return this.responseSuccess(result, 'Success', res)
+  }
+
+  @Get('/list')
+  @UseBefore(validationMiddleware(PaginationQueryDto, 'query'))
+  async getListItems(@GetPagination() pagination: Pagination, @Res() res: Response) {
+    const result = await this.itemServices.getListItems(pagination)
 
     return this.responseSuccess(result, 'Success', res)
   }
