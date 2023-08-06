@@ -11,6 +11,9 @@ import ItemRepository from '@repositories/item.repository'
 import { File } from '@interfaces/file.interface'
 import { CreateItemInterface, UpdateItemInterface } from '@interfaces/item.interface'
 import { UploadToFilebaseService } from '@common/services/upload_file.service'
+import { Pagination } from '@interfaces/pagination.interface'
+import { WhereOptions } from 'sequelize'
+import Item from '@models/entities/items.entity'
 
 @Service()
 class ItemServices {
@@ -45,6 +48,16 @@ class ItemServices {
     }
 
     return result
+  }
+
+  async getListItems(pagination: Pagination) {
+    const { skip, limit, sort, search } = pagination
+
+    const whereClause: WhereOptions<Item> = {
+      ...search,
+    }
+
+    return this.itemRepository.getListItems(whereClause, skip, limit, sort)
   }
 }
 
