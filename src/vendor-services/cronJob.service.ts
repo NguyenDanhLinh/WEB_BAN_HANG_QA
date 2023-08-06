@@ -2,10 +2,14 @@ import { Service } from 'typedi'
 import cron from 'node-cron'
 import moment from 'moment-timezone'
 import VoucherRepository from '@repositories/voucher.repository'
+import UserVoucherRepository from '@repositories/user_voucher.repository'
 
 @Service()
 class CronServices {
-  constructor(protected voucherRepository: VoucherRepository) {}
+  constructor(
+    protected voucherRepository: VoucherRepository,
+    protected userVoucherRepository: UserVoucherRepository,
+  ) {}
 
   createScheduleLog(time, taskFunction) {
     const cronTime = this.formatDateToCron(time)
@@ -17,11 +21,13 @@ class CronServices {
     })
   }
 
-  createScheduleCloseVoucher(time, id: number) {
+  createScheduleCloseVoucher(time, voucherId: number) {
     const cronTime = this.formatDateToCron(time)
 
     cron.schedule(cronTime, async () => {
-      this.voucherRepository.update({ inventoryNumber: 0 }, { where: { id } })
+      this.voucherRepository.update({ inventoryNumber: 0 }, { where: { id: voucherId } })
+
+      this.userVoucherRepository.deleteByCondition({ voucherId })
     })
   }
 
