@@ -5,7 +5,7 @@ import validationMiddleware from '@middlewares/validation.middleware'
 import { CreateUserDto, UserLoginDto } from 'dtos/users.dto'
 import { AdminMiddleware } from '@middlewares/checkAdmin.middleware'
 import VoucherServices from '@services/voucher.service'
-import { CreateVoucherDto } from 'dtos/voucher.dto'
+import { CreateVoucherDto, UpdateVoucherDto } from 'dtos/voucher.dto'
 
 @JsonController('/voucher')
 @Service()
@@ -19,6 +19,15 @@ export class VoucherController extends BaseController {
   @Post('/create')
   async createVoucher(@Body() body: CreateVoucherDto, @Res() res: any) {
     const result = await this.voucherServices.createVoucher(body)
+
+    return this.responseSuccess(result, 'Success', res)
+  }
+
+  @UseBefore(AdminMiddleware)
+  @UseBefore(validationMiddleware(UpdateVoucherDto, 'body'))
+  @Post('/update')
+  async updateVoucher(@Body() body: UpdateVoucherDto, @Res() res: any) {
+    const result = await this.voucherServices.updateVoucher(body)
 
     return this.responseSuccess(result, 'Success', res)
   }
