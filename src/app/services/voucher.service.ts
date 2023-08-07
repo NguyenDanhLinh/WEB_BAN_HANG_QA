@@ -8,7 +8,7 @@ import { env } from '@env'
 import CronServices from 'vendor-services/cronJob.service'
 import CategoryRepository from '@repositories/category.repository'
 import VoucherRepository from '@repositories/voucher.repository'
-import { CreateVoucherInterface } from '@interfaces/voucher.interface'
+import { CreateVoucherInterface, UpdateVoucherInterface } from '@interfaces/voucher.interface'
 
 @Service()
 class VoucherServices {
@@ -38,6 +38,20 @@ class VoucherServices {
     }
 
     return result
+  }
+
+  async updateVoucher(body: UpdateVoucherInterface) {
+    const voucherId = body.voucherId
+
+    delete body.voucherId
+
+    const voucher = await this.voucherRepository.findById(voucherId)
+
+    if (voucher.inventoryNumber <= 0) {
+      this.cronServices.createScheduleCloseVoucher(body.endDate, voucherId)
+    }
+
+    return this.voucherRepository.update(body, { where: { id: voucherId } })
   }
 }
 
