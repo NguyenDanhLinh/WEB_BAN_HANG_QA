@@ -13,6 +13,9 @@ import ItemRepository from '@repositories/item.repository'
 import DB from '@models/index'
 import { LoggingException } from '@exceptions/logging.exception'
 import CartItemRepository from '@repositories/cart_item.repository'
+import { Pagination } from '@interfaces/pagination.interface'
+import { Op, WhereOptions } from 'sequelize'
+import Cart from '@models/entities/carts.entity'
 
 @Service()
 class CartServices {
@@ -48,6 +51,16 @@ class CartServices {
 
       throw new LoggingException(400, error.message, { body, userId })
     }
+  }
+
+  async getListItemInCart(pagination: Pagination, userId: number) {
+    const { skip, limit, sort } = pagination
+
+    const whereClause: WhereOptions<Cart> = {
+      userId,
+    }
+
+    return this.cartRepository.getListItemInCart(whereClause, skip, limit, sort)
   }
 }
 
