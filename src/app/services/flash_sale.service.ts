@@ -12,7 +12,6 @@ import { CreateFlashSaleInterface } from '@interfaces/flashSale.interface'
 import ItemRepository from '@repositories/item.repository'
 import DB from '@models/index'
 import { LoggingException } from '@exceptions/logging.exception'
-import { truncate } from 'fs'
 import FlashSaleItem from '@models/entities/flashSale_item.entity'
 import FlashSaleItemRepository from '@repositories/flashSale_item.repository'
 
@@ -33,7 +32,6 @@ class FlashSaleServices {
 
     const transaction = await DB.sequelize.transaction()
 
-    // const itemRecord = await this.itemRepository.findById(body.itemId)
     const user = await this.userRepository.getAll({ attributes: ['email'] })
 
     const listEmail = user.map((obj) => obj.email)
