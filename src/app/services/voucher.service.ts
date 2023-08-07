@@ -9,6 +9,9 @@ import CronServices from 'vendor-services/cronJob.service'
 import CategoryRepository from '@repositories/category.repository'
 import VoucherRepository from '@repositories/voucher.repository'
 import { CreateVoucherInterface, UpdateVoucherInterface } from '@interfaces/voucher.interface'
+import { Pagination } from '@interfaces/pagination.interface'
+import { Op, WhereOptions } from 'sequelize'
+import Voucher from '@models/entities/voucher.entity'
 
 @Service()
 class VoucherServices {
@@ -52,6 +55,32 @@ class VoucherServices {
     }
 
     return this.voucherRepository.update(body, { where: { id: voucherId } })
+  }
+
+  async getListVoucher(pagination: Pagination) {
+    const { skip, limit, sort, search } = pagination
+
+    const whereClause: WhereOptions<Voucher> = {
+      inventoryNumber: {
+        [Op.gte]: 1,
+      },
+      ...search,
+    }
+
+    return this.voucherRepository.getListVoucher(whereClause, skip, limit, sort)
+  }
+
+  async getListVoucherByUser(pagination: Pagination, userId: number) {
+    const { skip, limit, sort, search } = pagination
+
+    const whereClause: WhereOptions<Voucher> = {
+      inventoryNumber: {
+        [Op.gte]: 1,
+      },
+      ...search,
+    }
+
+    return this.voucherRepository.getListVoucherByUser(whereClause, skip, limit, sort, userId)
   }
 }
 
