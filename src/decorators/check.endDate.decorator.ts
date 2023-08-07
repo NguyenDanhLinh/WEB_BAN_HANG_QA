@@ -19,7 +19,7 @@ export function checkEndDate(validationOptions?: ValidationOptions) {
         },
 
         defaultMessage(): string {
-          return 'Invalid endDate'
+          return 'Invalid endDate or startDate'
         },
       },
     })
