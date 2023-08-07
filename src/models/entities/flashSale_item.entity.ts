@@ -26,7 +26,7 @@ export default class FlashSaleItem extends Model<FlashSaleItem> {
   @Column
   id!: number
 
-  @Column
+  @Column({ field: 'flashSale_id' })
   @ForeignKey(() => FlashSale)
   flashSaleId!: number
 
