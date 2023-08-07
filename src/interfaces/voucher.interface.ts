@@ -7,3 +7,13 @@ export interface CreateVoucherInterface {
   inventoryNumber: number
   barcode?: string
 }
+
+export interface UpdateVoucherInterface {
+  voucherId: number
+  name: string
+  percent: number
+  startDate: Date
+  endDate: Date
+  moneyReduced: string
+  inventoryNumber: number
+}
