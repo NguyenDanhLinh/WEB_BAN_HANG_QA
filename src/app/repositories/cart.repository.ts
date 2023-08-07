@@ -4,10 +4,12 @@ import { BaseRepository } from './base.repository'
 import { ModelContainer } from '@decorators/model.decorator'
 import Cart from '@models/entities/carts.entity'
 import { CartRepositoryInterface } from './interfaces/cart.repository.interface'
-import { Transaction, WhereOptions } from 'sequelize'
+import { Op, Transaction, WhereOptions } from 'sequelize'
 import CartItem from '@models/entities/cart_item.entity'
 import Item from '@models/entities/items.entity'
 import User from '@models/entities/users.entity'
+import FlashSaleItem from '@models/entities/flashSale_item.entity'
+import FlashSale from '@models/entities/flash_sale.entity'
 
 @Service({ global: true })
 class CartRepository extends BaseRepository<Cart> implements CartRepositoryInterface<Cart> {
@@ -46,6 +48,24 @@ class CartRepository extends BaseRepository<Cart> implements CartRepositoryInter
             {
               model: Item,
               as: 'item',
+              include: [
+                {
+                  model: FlashSaleItem,
+                  as: 'flashSaleItem',
+                  required: false,
+                  where: {
+                    quantity: {
+                      [Op.gte]: 1,
+                    },
+                  },
+                  include: [
+                    {
+                      model: FlashSale,
+                      as: 'flashSale',
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
@@ -53,7 +73,7 @@ class CartRepository extends BaseRepository<Cart> implements CartRepositoryInter
           model: User,
           as: 'user',
           attributes: {
-            exclude: ['createdAt', 'updatedAt','password'],
+            exclude: ['createdAt', 'updatedAt', 'password'],
           },
         },
       ],

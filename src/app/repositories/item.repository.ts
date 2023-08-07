@@ -4,7 +4,11 @@ import { BaseRepository } from './base.repository'
 import { ModelContainer } from '@decorators/model.decorator'
 import { ItemRepositoryInterface } from './interfaces/item.repository.interface'
 import Item from '@models/entities/items.entity'
-import { WhereOptions } from 'sequelize'
+import { Op, WhereOptions } from 'sequelize'
+import FlashSaleItem from '@models/entities/flashSale_item.entity'
+import FlashSale from '@models/entities/flash_sale.entity'
+import Category from '@models/entities/categories.entity'
+import CartItem from '@models/entities/cart_item.entity'
 
 @Service({ global: true })
 class ItemRepository extends BaseRepository<Item> implements ItemRepositoryInterface<Item> {
@@ -20,6 +24,25 @@ class ItemRepository extends BaseRepository<Item> implements ItemRepositoryInter
   ): Promise<any> {
     return this.model.findAndCountAll({
       where: whereClause,
+      include: [
+        {
+          model: FlashSaleItem,
+          as: 'flashSaleItem',
+          required: false,
+          where: {
+            quantity: {
+              [Op.gte]: 1,
+            },
+          },
+          include: [
+            {
+              model: FlashSale,
+              as: 'flashSale',
+              required: false,
+            },
+          ],
+        },
+      ],
       order: orderBy,
       offset,
       limit,

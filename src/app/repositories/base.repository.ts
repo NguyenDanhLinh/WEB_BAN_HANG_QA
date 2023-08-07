@@ -16,8 +16,8 @@ export abstract class BaseRepository<M extends Model> implements BaseRepositoryI
     return this.model.findByPk(id)
   }
 
-  async getAll(): Promise<M[]> {
-    return this.model.findAll()
+  async getAll(params?: any): Promise<M[]> {
+    return this.model.findAll(params)
   }
 
   async findByCondition(object: Object): Promise<M> {
