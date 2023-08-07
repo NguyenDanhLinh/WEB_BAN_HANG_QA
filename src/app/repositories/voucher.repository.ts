@@ -4,7 +4,9 @@ import { BaseRepository } from './base.repository'
 import { ModelContainer } from '@decorators/model.decorator'
 import { VoucherRepositoryInterface } from './interfaces/voucher.repository.interface'
 import Voucher from '@models/entities/voucher.entity'
-import { Transaction, WhereAttributeHashValue, Op } from 'sequelize'
+import { Transaction, WhereAttributeHashValue, Op, WhereOptions } from 'sequelize'
+import UserVoucher from '@models/entities/user_voucher.entity'
+import User from '@models/entities/users.entity'
 
 @Service({ global: true })
 class VoucherRepository
@@ -32,6 +34,51 @@ class VoucherRepository
         transaction,
       },
     )
+  }
+
+  async getListVoucher(
+    whereClause: WhereOptions<Voucher>,
+    offset: number,
+    limit: number,
+    orderBy: any,
+  ): Promise<any> {
+    return this.model.findAndCountAll({
+      where: whereClause,
+      order: orderBy,
+      offset,
+      limit,
+    })
+  }
+
+  async getListVoucherByUser(
+    whereClause: WhereOptions<Voucher>,
+    offset: number,
+    limit: number,
+    orderBy: any,
+    userId: number,
+  ): Promise<any> {
+    return this.model.findAndCountAll({
+      where: whereClause,
+      include: [
+        {
+          model: UserVoucher,
+          as: 'userVoucher',
+          required: true,
+          where: {
+            user_id: userId,
+          },
+          include: [
+            {
+              model: User,
+              as: 'user',
+            },
+          ],
+        },
+      ],
+      order: orderBy,
+      offset,
+      limit,
+    })
   }
 }
 
