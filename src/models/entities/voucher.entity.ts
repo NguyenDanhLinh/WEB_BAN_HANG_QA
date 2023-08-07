@@ -14,6 +14,7 @@ import {
 } from 'sequelize-typescript'
 import Category from './categories.entity'
 import Order from './order.entity'
+import UserVoucher from './user_voucher.entity'
 
 @Table({
   tableName: 'voucher',
@@ -49,6 +50,9 @@ export default class Voucher extends Model<Voucher> {
 
   @HasMany(() => Order, 'itemId')
   order: Order[]
+
+  @HasMany(() => UserVoucher, 'voucherId')
+  userVoucher: UserVoucher[]
 
   @CreatedAt
   @Column
