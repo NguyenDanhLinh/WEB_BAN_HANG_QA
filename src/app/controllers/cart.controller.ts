@@ -8,6 +8,10 @@ import CartServices from '@services/cart.service'
 import { UserMiddleware } from '@middlewares/checkUser.middleware'
 import { AddItemToCartDto } from 'dtos/cart.dto'
 import { RequestWithUser } from '@interfaces/auth.interface'
+import { PaginationQueryDto } from 'dtos/pagination.dto'
+import { GetPagination } from '@decorators/get.pagination.decorator'
+import { Pagination } from '@interfaces/pagination.interface'
+import { Response } from 'express'
 
 @JsonController('/carts')
 @Service()
@@ -25,6 +29,19 @@ export class CartController extends BaseController {
     @Res() res: any,
   ) {
     const result = await this.cartServices.addItemToCart(body, req.user.id)
+
+    return this.responseSuccess(result, 'Success', res)
+  }
+
+  @Get('/list-item')
+  @UseBefore(UserMiddleware)
+  @UseBefore(validationMiddleware(PaginationQueryDto, 'query'))
+  async getListItemInCart(
+    @GetPagination() pagination: Pagination,
+    @Req() req: RequestWithUser,
+    @Res() res: Response,
+  ) {
+    const result = await this.cartServices.getListItemInCart(pagination, req.user.id)
 
     return this.responseSuccess(result, 'Success', res)
   }
