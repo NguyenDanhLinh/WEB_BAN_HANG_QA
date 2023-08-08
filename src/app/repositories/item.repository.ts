@@ -21,6 +21,7 @@ class ItemRepository extends BaseRepository<Item> implements ItemRepositoryInter
     offset: number,
     limit: number,
     orderBy: any,
+    quantity?: number,
   ): Promise<any> {
     return this.model.findAndCountAll({
       where: whereClause,
@@ -31,7 +32,7 @@ class ItemRepository extends BaseRepository<Item> implements ItemRepositoryInter
           required: false,
           where: {
             quantity: {
-              [Op.gte]: 1,
+              [Op.gte]: quantity ? quantity : 1,
             },
           },
           include: [
@@ -46,6 +47,31 @@ class ItemRepository extends BaseRepository<Item> implements ItemRepositoryInter
       order: orderBy,
       offset,
       limit,
+    })
+  }
+
+  async getItems(whereClause: WhereOptions<Item>, quantity?: number): Promise<any> {
+    return this.model.findOne({
+      where: whereClause,
+      include: [
+        {
+          model: FlashSaleItem,
+          as: 'flashSaleItem',
+          required: false,
+          where: {
+            quantity: {
+              [Op.gte]: quantity ? quantity : 1,
+            },
+          },
+          include: [
+            {
+              model: FlashSale,
+              as: 'flashSale',
+              required: false,
+            },
+          ],
+        },
+      ],
     })
   }
 }

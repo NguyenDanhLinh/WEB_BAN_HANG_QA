@@ -43,6 +43,14 @@ export default class FlashSaleItem extends Model<FlashSaleItem> {
   @Column
   quantity!: number
 
+  @Default(0)
+  @Column
+  percent!: number
+
+  @Default('0')
+  @Column
+  moneyReduced!: string
+
   @CreatedAt
   @Column
   createdAt!: Date

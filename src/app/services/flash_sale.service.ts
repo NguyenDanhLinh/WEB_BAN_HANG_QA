@@ -41,10 +41,23 @@ class FlashSaleServices {
 
       await Promise.all(
         items.map((item) => {
-          return this.flashSaleItemRepository.create(
-            { flashSaleId: flashSale.id, ...item },
-            transaction,
-          )
+          return this.itemRepository.getItems({ id: item.itemId }).then((itemRecord) => {
+            if (
+              parseInt(item.moneyReduced) >= parseInt(itemRecord.outputPrice) ||
+              item.percent >= 100
+            ) {
+              throw new HttpException(400, 'The amount of reduction is too big')
+            }
+
+            if (itemRecord.flashSaleItem.length > 0) {
+              return
+            }
+
+            return this.flashSaleItemRepository.create(
+              { flashSaleId: flashSale.id, ...item },
+              transaction,
+            )
+          })
         }),
       )
 

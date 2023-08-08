@@ -1,7 +1,5 @@
 export interface CreateFlashSaleInterface {
-  percent: number
-  moneyReduced: string
   startDate: Date
   endDate: Date
-  items: Array<{}>
+  items: Array<{ itemId: any; quantity: any; percent: any; moneyReduced: any }>
 }
