@@ -19,14 +19,6 @@ import { IsAlreadyExistWithArray } from '@decorators/is.existWithArray.decorator
 
 export class CreateFlashSaleDto {
   @IsNotEmpty()
-  @IsNumber()
-  percent: number
-
-  @IsNotEmpty()
-  @IsString()
-  moneyReduced: string
-
-  @IsNotEmpty()
   @IsDateString()
   @checkEndDate()
   @Transform(({ value }: TransformFnParams) => moment(value, 'YYYY-MM-DD HH:mm:ss Z').toISOString())
@@ -40,6 +32,6 @@ export class CreateFlashSaleDto {
 
   @IsArray()
   @IsNotEmpty()
-  @IsAlreadyExistWithArray('items', 'id', ['itemId', 'quantity'])
-  items: Array<{}>
+  @IsAlreadyExistWithArray('items', 'id', ['itemId', 'quantity', 'percent', 'moneyReduced'])
+  items: Array<{ itemId: any; quantity: any; percent: any; moneyReduced: any }>
 }

@@ -79,7 +79,7 @@ class CronServices {
 
   subtract15MinutesFromDate(dateTimeString) {
     const originalDate = new Date(dateTimeString)
-    const newDate = new Date(originalDate.getTime() - 15 * 60 * 1000) // Trừ 15 phút (15 * 60 * 1000 milliseconds)
+    const newDate = new Date(originalDate.getTime() - 1 * 60 * 1000) // Trừ 1 phút (1 * 60 * 1000 milliseconds)
 
     const newDateString = newDate.toISOString() // Chuyển đổi về chuỗi ngày thời gian (ISO 8601)
 

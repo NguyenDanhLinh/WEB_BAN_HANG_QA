@@ -24,14 +24,6 @@ export default class FlashSale extends Model<FlashSale> {
   @Column
   id!: number
 
-  @Default(0)
-  @Column
-  percent!: number
-
-  @Default('0')
-  @Column
-  moneyReduced!: string
-
   @Column
   startDate!: Date
 
