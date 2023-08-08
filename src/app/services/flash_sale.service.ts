@@ -41,6 +41,10 @@ class FlashSaleServices {
 
       await Promise.all(
         items.map((item) => {
+          if (item.percent != 0 && item.moneyReduced != '0') {
+            throw new HttpException(400, 'percent or moneyReduced must be 0')
+          }
+
           return this.itemRepository.getItems({ id: item.itemId }).then((itemRecord) => {
             if (
               parseInt(item.moneyReduced) >= parseInt(itemRecord.outputPrice) ||
