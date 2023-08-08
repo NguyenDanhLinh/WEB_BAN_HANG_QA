@@ -21,6 +21,10 @@ class VoucherServices {
   ) {}
 
   async createVoucher(body: CreateVoucherInterface) {
+    if (body.percent > 100) {
+      throw new HttpException(400, 'The amount of reduction is too big')
+    }
+
     body.barcode = this.generateRandomBarcode()
 
     const voucher = await this.voucherRepository.create(body)
