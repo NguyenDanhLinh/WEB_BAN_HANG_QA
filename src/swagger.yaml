@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  version: 1.0.0
+paths:
+  /user/list:
+    get:
+      summary: Lấy danh sách người dùng
+      tags:
+        - Users
+      description: Lấy danh sách tất cả người dùng trong hệ thống
+      responses:
+        '200':
+          description: Thành công. Trả về danh sách người dùng.
+
+  /user/login:
+    post:
+      summary: Người dùng đăng nhập
+      tags:
+        - Users
+      description: Người dùng đăng nhập
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                password:
+                  type: string
+              required: # Không cần xác định trường required ở đây
+      responses:
+        '201':
+          description: Thành công. Trả về jwt.
+
+  /items/list:
+    get:
+      summary: Lấy danh sách sản phẩm
+      tags:
+        - Items
+      description: Lấy danh sách các sản phẩm theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về danh sách sản phẩm.
