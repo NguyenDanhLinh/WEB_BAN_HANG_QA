@@ -17,7 +17,7 @@ import ItemServices from '@services/item.service'
 import { createFileUploadOption } from '@lib/file'
 import { FileEnum } from '@enum/file.enum'
 import { File } from '@interfaces/file.interface'
-import { CreateItemDto, UpdateItemDto } from 'dtos/item.dto'
+import { CreateItemDto, DeleteItemDto, UpdateItemDto } from 'dtos/item.dto'
 import { PaginationQueryDto } from 'dtos/pagination.dto'
 import { GetPagination } from '@decorators/get.pagination.decorator'
 import { Pagination } from '@interfaces/pagination.interface'
@@ -54,6 +54,15 @@ export class ItemController extends BaseController {
     const result = await this.itemServices.getListItems(pagination)
 
     return this.responseSuccess(result, 'Success', res)
+  }
+
+  @UseBefore(AdminMiddleware)
+  @Post('/delete')
+  @UseBefore(validationMiddleware(DeleteItemDto, 'body'))
+  async deleteItem(@Body() body: DeleteItemDto, @Res() res: Response) {
+    await this.itemServices.deleteItem(body.itemId)
+
+    return this.responseSuccess([], 'Success', res)
   }
 }
 
