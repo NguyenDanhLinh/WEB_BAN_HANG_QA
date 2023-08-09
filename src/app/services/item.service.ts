@@ -14,6 +14,14 @@ import { UploadToFilebaseService } from '@common/services/upload_file.service'
 import { Pagination } from '@interfaces/pagination.interface'
 import { WhereOptions } from 'sequelize'
 import Item from '@models/entities/items.entity'
+import FlashSaleItemRepository from '@repositories/flashSale_item.repository'
+import CartItemRepository from '@repositories/cart_item.repository'
+import CartRepository from '@repositories/cart.repository'
+import VoucherRepository from '@repositories/voucher.repository'
+import UserVoucherRepository from '@repositories/user_voucher.repository'
+import OrderItemRepository from '@repositories/order_item.repository'
+import { LoggingException } from '@exceptions/logging.exception'
+import DB from '@models/index'
 
 @Service()
 class ItemServices {
@@ -21,6 +29,12 @@ class ItemServices {
     protected itemRepository: ItemRepository,
     protected cronServices: CronServices,
     protected uploadToFilebaseService: UploadToFilebaseService,
+    protected flashSaleItemRepository: FlashSaleItemRepository,
+    protected cartItemRepository: CartItemRepository,
+    protected cartRepository: CartRepository,
+    protected voucherRepository: VoucherRepository,
+    protected orderItemRepository: OrderItemRepository,
+    protected userVoucherRepository: UserVoucherRepository,
   ) {}
 
   async createItem(body: CreateItemInterface) {
@@ -58,6 +72,26 @@ class ItemServices {
     }
 
     return this.itemRepository.getListItems(whereClause, skip, limit, sort)
+  }
+
+  async deleteItem(itemId: number) {
+    const transaction = await DB.sequelize.transaction()
+
+    try {
+      await this.itemRepository.deleteById(itemId, transaction)
+
+      await this.cartItemRepository.deleteByCondition({ itemId }, transaction)
+
+      await this.flashSaleItemRepository.deleteByCondition({ itemId }, transaction)
+
+      transaction.commit()
+
+      return true
+    } catch (error) {
+      transaction.rollback()
+
+      throw new LoggingException(400, error.message, { itemId })
+    }
   }
 }
 

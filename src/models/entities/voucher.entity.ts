@@ -49,7 +49,7 @@ export default class Voucher extends Model<Voucher> {
   @Column
   inventoryNumber!: number
 
-  @HasMany(() => Order, 'itemId')
+  @HasMany(() => Order, 'voucherId')
   order: Order[]
 
   @HasMany(() => UserVoucher, 'voucherId')

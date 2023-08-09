@@ -33,7 +33,7 @@ export function IsNotExist(property: string, key: string, validationOptions?: Va
           }
         },
         defaultMessage(): string {
-          return 'Field already exist!'
+          return `Field already exist in ${property}!`
         },
       },
     })
