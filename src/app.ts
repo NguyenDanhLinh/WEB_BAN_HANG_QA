@@ -87,7 +87,7 @@ class App {
           title: 'REST API',
           version: '1.0.0',
           description:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlck5hbWUiOiJsaW5oMjAwMSIsIm5hbWUiOiJuZ3V5ZW4gZGFuaCBsaW5oIiwicm9sZSI6ImFkbWluIiwicGhvbmVOdW1iZXIiOiIwMzI5MzIzMTEiLCJhZGRyZXNzIjoiYmEgdmkiLCJlbWFpbCI6Im5ndXllbmRhbmhsaW5oMjAwMUBnbWFpbC5jb20iLCJjcmVhdGVkQXQiOiIyMDIzLTA3LTI1IDA3OjI5OjQ0LjQ4NCArMDA6MDAiLCJ1cGRhdGVkQXQiOiIyMDIzLTA3LTI1IDA3OjI5OjQ0LjQ4NCArMDA6MDAiLCJpYXQiOjE2OTAyNzAyMTF9.tMi1bCHSOw9TVpg8AugcjLYPAHRbVLv2wDE2KypwfW0',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkxNTcxODc5fQ.hRFjoaNIgmkwabl43pjkY2KzEBB_UHC4I3vsJcB1g6U',
         },
         servers: [
           {
@@ -114,7 +114,7 @@ class App {
           { name: 'Items', description: 'API for managing items' },
         ],
       },
-      apis: ['src/swagger.yaml'],
+      apis: ['swagger.yaml'],
     }
 
     const specs = swaggerJSDoc(options)
