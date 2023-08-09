@@ -59,7 +59,7 @@ export function IsAlreadyExistWithArray(
           return check
         },
         defaultMessage(): string {
-          return 'Field does not exist!'
+          return `Field does not exist in ${property}!`
         },
       },
     })

@@ -44,8 +44,8 @@ export abstract class BaseRepository<M extends Model> implements BaseRepositoryI
     return this.model.create(object, association)
   }
 
-  async deleteById(id: any): Promise<number> {
-    return this.model.destroy({ where: { id: id } })
+  async deleteById(id: any, transaction?: Transaction): Promise<number> {
+    return this.model.destroy({ where: { id: id }, transaction })
   }
 
   async update(

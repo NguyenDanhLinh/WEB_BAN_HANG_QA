@@ -73,3 +73,11 @@ export class UpdateItemDto {
   @IsString()
   avatar: string
 }
+
+export class DeleteItemDto {
+  @IsNotEmpty()
+  @IsString()
+  @IsAlreadyExist('items', 'id')
+  @IsNotExist('order_item', 'itemId')
+  itemId: number
+}
