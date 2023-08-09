@@ -4,6 +4,7 @@ import { BaseRepository } from './base.repository'
 import { ModelContainer } from '@decorators/model.decorator'
 import { OrderItemRepositoryInterface } from './interfaces/order_item.repository.interface'
 import OrderItem from '@models/entities/order_item.entity'
+import { Transaction } from 'sequelize'
 
 @Service({ global: true })
 class OrderItemRepository
@@ -12,6 +13,10 @@ class OrderItemRepository
 {
   constructor(@ModelContainer(OrderItem.tableName) OrderItem: ModelCtor<OrderItem>) {
     super(OrderItem)
+  }
+
+  async create(param, transaction?: Transaction): Promise<OrderItem> {
+    return this.model.create(param, { transaction: transaction })
   }
 }
 

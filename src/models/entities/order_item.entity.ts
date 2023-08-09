@@ -45,6 +45,9 @@ export default class OrderItem extends Model<OrderItem> {
   quantity!: number
 
   @Column
+  price!: string
+
+  @Column({ field: 'flashSale_id' })
   @ForeignKey(() => FlashSale)
   flashSaleId!: number
 

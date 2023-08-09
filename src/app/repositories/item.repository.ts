@@ -4,7 +4,7 @@ import { BaseRepository } from './base.repository'
 import { ModelContainer } from '@decorators/model.decorator'
 import { ItemRepositoryInterface } from './interfaces/item.repository.interface'
 import Item from '@models/entities/items.entity'
-import { Op, WhereOptions } from 'sequelize'
+import { Op, Transaction, WhereAttributeHashValue, WhereOptions } from 'sequelize'
 import FlashSaleItem from '@models/entities/flashSale_item.entity'
 import FlashSale from '@models/entities/flash_sale.entity'
 import Category from '@models/entities/categories.entity'
@@ -73,6 +73,25 @@ class ItemRepository extends BaseRepository<Item> implements ItemRepositoryInter
         },
       ],
     })
+  }
+
+  async decrement(
+    field: keyof Item,
+    id: WhereAttributeHashValue<number>,
+    amount: number,
+    transaction?: Transaction,
+  ) {
+    return this.model.decrement(
+      {
+        [field]: amount,
+      },
+      {
+        where: {
+          id,
+        },
+        transaction,
+      },
+    )
   }
 }
 

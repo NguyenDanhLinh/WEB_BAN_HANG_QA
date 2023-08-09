@@ -9,7 +9,6 @@ export abstract class BaseRepository<M extends Model> implements BaseRepositoryI
 
   constructor(model: ModelCtor<M>) {
     this.model = model
-    console.log(model)
   }
 
   async findById(id: number): Promise<M> {

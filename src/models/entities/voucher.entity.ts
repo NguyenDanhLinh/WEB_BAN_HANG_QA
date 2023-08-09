@@ -15,6 +15,7 @@ import {
 import Category from './categories.entity'
 import Order from './order.entity'
 import UserVoucher from './user_voucher.entity'
+import OrderItem from './order_item.entity'
 
 @Table({
   tableName: 'voucher',

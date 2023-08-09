@@ -52,6 +52,13 @@ export default class Order extends Model<Order> {
   @HasMany(() => OrderItem, 'orderId')
   orderItem: OrderItem[]
 
+  @Column
+  @ForeignKey(() => Voucher)
+  voucherId!: number
+
+  @BelongsTo(() => Voucher, 'voucherId')
+  voucher: Voucher
+
   @CreatedAt
   @Column
   createdAt!: Date
