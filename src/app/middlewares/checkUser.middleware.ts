@@ -1,9 +1,12 @@
 import { Get, Post, JsonController, Req, Res } from 'routing-controllers'
 import { NextFunction } from 'express'
 import { ExpressMiddlewareInterface } from 'routing-controllers'
-import { Service } from 'typedi'
+import Container, { Service } from 'typedi'
 import { HttpException } from '@exceptions/http.exception'
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken'
+import UserRepository from '@repositories/user.repository'
+
+const userRepository = Container.get(UserRepository)
 
 @Service()
 export class UserMiddleware implements ExpressMiddlewareInterface {
@@ -14,7 +17,11 @@ export class UserMiddleware implements ExpressMiddlewareInterface {
     }
     const accessToken = bearer.split('Bearer ')[1].trim()
     try {
-      const dataUser: any = jwt.verify(accessToken, process.env.JWT_SECRET)
+      const dataVerify: any = jwt.verify(accessToken, process.env.JWT_SECRET)
+
+      const userId = dataVerify.id
+
+      const dataUser = await userRepository.findById(userId)
 
       if (!dataUser) {
         return next(new HttpException(401, 'Not user'))
