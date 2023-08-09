@@ -41,9 +41,7 @@ class UserServices {
       throw new HttpException(400, 'wrong username or password')
     }
 
-    delete user.password
-
-    return jwt.sign(user, env.auth.jwtSecret)
+    return jwt.sign({ id: user.id }, env.auth.jwtSecret)
   }
 
   async testConLog() {
