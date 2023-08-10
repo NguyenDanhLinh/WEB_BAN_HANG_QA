@@ -16,6 +16,7 @@ import { Transform, Type, TransformFnParams } from 'class-transformer'
 import moment from 'moment-timezone'
 import { checkEndDate } from '@decorators/check.endDate.decorator'
 import { IsAlreadyExistWithArray } from '@decorators/is.existWithArray.decorator'
+import { PaginationQueryDto } from './pagination.dto'
 
 export class CreateFlashSaleDto {
   @IsNotEmpty()
@@ -34,4 +35,12 @@ export class CreateFlashSaleDto {
   @IsNotEmpty()
   @IsAlreadyExistWithArray('items', 'id', ['itemId', 'quantity', 'percent', 'moneyReduced'])
   items: Array<{ itemId: any; quantity: any; percent: any; moneyReduced: any }>
+}
+
+export class GetFlashSaleDto extends PaginationQueryDto {
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  @IsAlreadyExist('flash_sale', 'id')
+  id: number
 }

@@ -37,11 +37,27 @@ class OrderServices {
     protected userVoucherRepository: UserVoucherRepository,
   ) {}
 
+  checkTimeVoucher(voucherTime: Date): boolean {
+    const currentTimestamp = new Date().getTime()
+    const targetTimestamp = new Date(voucherTime).getTime()
+
+    return targetTimestamp < currentTimestamp
+  }
+
   async createOrder(body: CreateOrderInterface, userId: number) {
-    const { voucherId, items } = body
+    const { items } = body
+
+    const voucherId = body.voucherId ? body.voucherId : 0
+    let voucher = null
 
     const cart: Cart = await this.cartRepository.findByCondition({ where: { userId } })
-    const userVoucher = await this.userVoucherRepository.getUserVoucher({ voucherId, userId })
+    let userVoucher = await this.userVoucherRepository.getUserVoucher({ voucherId, userId })
+
+    if (userVoucher) {
+      voucher = userVoucher.voucher
+
+      userVoucher = this.checkTimeVoucher(voucher.startDate) ? userVoucher : null
+    }
 
     let totalPrice = 0
     const listItemId = []
@@ -97,11 +113,7 @@ class OrderServices {
         }),
       )
 
-      let voucher = null
-
       if (userVoucher) {
-        voucher = userVoucher.voucher
-
         await this.userVoucherRepository.deleteByCondition({ voucherId, userId }, transaction)
 
         totalPrice =
@@ -125,15 +137,17 @@ class OrderServices {
         }),
       )
 
-      await this.cartItemRepository.deleteByCondition(
-        {
-          cartId: cart.id,
-          itemId: {
-            [Op.in]: listItemId,
+      if (cart) {
+        await this.cartItemRepository.deleteByCondition(
+          {
+            cartId: cart.id,
+            itemId: {
+              [Op.in]: listItemId,
+            },
           },
-        },
-        transaction,
-      )
+          transaction,
+        )
+      }
 
       await transaction.commit()
     } catch (error) {

@@ -37,6 +37,19 @@ class FlashSaleItemRepository
       },
     )
   }
+
+  async updateFlashSaleItem(
+    updateObject: Object,
+    id: number,
+    transaction?: Transaction,
+  ): Promise<[affectedCount: number]> {
+    return this.model.update(updateObject, {
+      where: {
+        id: id,
+      },
+      transaction,
+    })
+  }
 }
 
 export default FlashSaleItemRepository
