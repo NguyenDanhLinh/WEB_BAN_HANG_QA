@@ -28,6 +28,24 @@ class CronServices {
     })
   }
 
+  createScheduleUpdateFlashSaleItem(
+    time,
+    listCronUpdateSaleItem: { flashSaleId: number; quantity: any }[],
+  ) {
+    const cronTime = this.formatDateToCron(time)
+
+    cron.schedule(cronTime, async () => {
+      Promise.all(
+        listCronUpdateSaleItem.map((item) => {
+          return this.flashSaleItemRepository.update(
+            { quantity: item.quantity },
+            { where: { id: item.flashSaleId } },
+          )
+        }),
+      )
+    })
+  }
+
   createScheduleCloseVoucher(time, voucherId: number) {
     const cronTime = this.formatDateToCron(time)
 
@@ -49,7 +67,7 @@ class CronServices {
   createScheduleStartFlashSale(time, flashSaleId: number, listMail: string[]) {
     const cronTime = this.formatDateToCron(this.subtract15MinutesFromDate(time))
 
-    const subject = `flash sale is about to start, click on https://github.com/ for details`
+    const subject = `flash sale is about to start, click on http://localhost:3000/api/v1/flash-sale/list?id=${flashSaleId} for details`
 
     cron.schedule(cronTime, async () => {
       listMail.map((email) => {

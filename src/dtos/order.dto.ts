@@ -18,7 +18,7 @@ import { checkEndDate } from '@decorators/check.endDate.decorator'
 import { IsAlreadyExistWithArray } from '@decorators/is.existWithArray.decorator'
 
 export class CreateOrderDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @IsAlreadyExist('voucher', 'id')
   voucherId: number
