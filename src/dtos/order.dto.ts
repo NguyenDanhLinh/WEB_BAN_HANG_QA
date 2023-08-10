@@ -16,6 +16,7 @@ import { Transform, Type, TransformFnParams } from 'class-transformer'
 import moment from 'moment-timezone'
 import { checkEndDate } from '@decorators/check.endDate.decorator'
 import { IsAlreadyExistWithArray } from '@decorators/is.existWithArray.decorator'
+import { PaginationQueryDto } from './pagination.dto'
 
 export class CreateOrderDto {
   @IsOptional()
@@ -27,4 +28,12 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsAlreadyExistWithArray('items', 'id', ['itemId', 'quantity'])
   items: Array<{ itemId: any; quantity: any }>
+}
+
+export class GetOrderDto extends PaginationQueryDto {
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  @IsAlreadyExist('orders', 'id')
+  id: number
 }

@@ -35,13 +35,6 @@ export default class Order extends Model<Order> {
   @BelongsTo(() => User, 'userId')
   user: User
 
-  @Column
-  @ForeignKey(() => Item)
-  itemId!: number
-
-  @BelongsTo(() => Item, 'itemId')
-  item: Item
-
   @Default(StatusOderEnum.PENDING)
   @Column(DataType.ENUM({ values: Object.values(StatusOderEnum) }))
   status: StatusOderEnum
