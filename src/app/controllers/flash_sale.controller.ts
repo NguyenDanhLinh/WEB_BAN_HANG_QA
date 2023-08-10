@@ -28,7 +28,7 @@ export class FlashSaleController extends BaseController {
     return this.responseSuccess(result, 'Success', res)
   }
 
-  @Get('/list')
+  @Get('/get')
   @UseBefore(validationMiddleware(GetFlashSaleDto, 'query'))
   async getFlashSale(
     @GetPagination() pagination: Pagination,
