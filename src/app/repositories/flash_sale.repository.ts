@@ -4,7 +4,10 @@ import { BaseRepository } from './base.repository'
 import { ModelContainer } from '@decorators/model.decorator'
 import { FlashSaleRepositoryInterface } from './interfaces/flash_sale.repository.interface'
 import FlashSale from '@models/entities/flash_sale.entity'
-import { Transaction } from 'sequelize'
+import { Transaction, WhereOptions } from 'sequelize'
+import FlashSaleItem from '@models/entities/flashSale_item.entity'
+import Item from '@models/entities/items.entity'
+import Category from '@models/entities/categories.entity'
 
 @Service({ global: true })
 class FlashSaleRepository
@@ -17,6 +20,42 @@ class FlashSaleRepository
 
   async create(param, transaction?: Transaction): Promise<FlashSale> {
     return this.model.create(param, { transaction: transaction })
+  }
+
+  async getFlashSale(
+    whereClause: WhereOptions<FlashSale>,
+    offset: number,
+    limit: number,
+    orderBy: any,
+  ): Promise<any> {
+    return this.model.findAndCountAll({
+      where: whereClause,
+      include: [
+        {
+          model: FlashSaleItem,
+          as: 'flashSaleItem',
+          required: true,
+          include: [
+            {
+              model: Item,
+              as: 'item',
+              required: false,
+              include: [
+                {
+                  model: Category,
+                  as: 'category',
+                  required: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      order: orderBy,
+      offset,
+      limit,
+      distinct: true,
+    })
   }
 }
 
