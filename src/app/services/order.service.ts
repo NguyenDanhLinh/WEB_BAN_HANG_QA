@@ -8,7 +8,7 @@ import { env } from '@env'
 import CronServices from 'vendor-services/cronJob.service'
 import CategoryRepository from '@repositories/category.repository'
 import OrderRepository from '@repositories/order.repository'
-import { CreateOrderInterface } from '@interfaces/order.interface'
+import { CreateOrderInterface, GetOrderInterface } from '@interfaces/order.interface'
 import ItemRepository from '@repositories/item.repository'
 import Item from '@models/entities/items.entity'
 import DB from '@models/index'
@@ -21,7 +21,9 @@ import Voucher from '@models/entities/voucher.entity'
 import VoucherRepository from '@repositories/voucher.repository'
 import OrderItemRepository from '@repositories/order_item.repository'
 import UserVoucherRepository from '@repositories/user_voucher.repository'
-import { Op } from 'sequelize'
+import { Op, WhereOptions } from 'sequelize'
+import { Pagination } from '@interfaces/pagination.interface'
+import Order from '@models/entities/order.entity'
 
 @Service()
 class OrderServices {
@@ -76,7 +78,7 @@ class OrderServices {
           const itemRecord: Item = await this.itemRepository.getItems({ id: item.itemId })
 
           if (itemRecord.inventoryNumber < item.quantity) {
-            throw new HttpException(400, 'quantity k is enough')
+            throw new HttpException(400, 'quantity is not enough')
           }
 
           let price = item.quantity * parseInt(itemRecord.outputPrice)
@@ -155,6 +157,21 @@ class OrderServices {
 
       throw new LoggingException(400, error.message, { body, userId })
     }
+  }
+
+  async getOrder(pagination: Pagination, params: GetOrderInterface, userId?: number) {
+    const { skip, limit, sort, search } = pagination
+
+    let whereClause: WhereOptions<Order> = {
+      ...search,
+      ...params,
+    }
+
+    if (userId) {
+      whereClause = { ...whereClause, userId }
+    }
+
+    return this.orderRepository.getOrder(whereClause, skip, limit, sort)
   }
 }
 
