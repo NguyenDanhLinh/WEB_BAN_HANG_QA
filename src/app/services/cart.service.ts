@@ -8,7 +8,7 @@ import { env } from '@env'
 import CronServices from 'vendor-services/cronJob.service'
 import CategoryRepository from '@repositories/category.repository'
 import CartRepository from '@repositories/cart.repository'
-import { AddItemToCart } from '@interfaces/cart.interface'
+import { AddItemToCart, DeleteItemToCart, IncrementItemToCart } from '@interfaces/cart.interface'
 import ItemRepository from '@repositories/item.repository'
 import DB from '@models/index'
 import { LoggingException } from '@exceptions/logging.exception'
@@ -61,6 +61,30 @@ class CartServices {
     }
 
     return this.cartRepository.getListItemInCart(whereClause, skip, limit, sort)
+  }
+
+  async deleteItemToCart(body: DeleteItemToCart, userId: number) {
+    const cart = await this.cartRepository.findByCondition({ where: { userId } })
+
+    return this.cartItemRepository.deleteByCondition({ cartId: cart.id, itemId: body.itemId })
+  }
+
+  async incrementItemToCart(body: IncrementItemToCart, userId: number) {
+    const cart = await this.cartRepository.findByCondition({ where: { userId } })
+
+    const cartItem = await this.cartItemRepository.findByCondition({
+      where: { cartId: cart.id, itemId: body.itemId },
+    })
+
+    let quantityIncrement = body.quantity ? body.quantity : 1
+
+    const item = await this.itemRepository.findById(body.itemId)
+
+    if (quantityIncrement + cartItem.quantity > item.inventoryNumber) {
+      throw new HttpException(400, 'the number of inventory_number is not enough')
+    }
+
+    return this.cartItemRepository.increment('quantity', cartItem.id, quantityIncrement)
   }
 }
 
