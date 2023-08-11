@@ -18,3 +18,16 @@ export class AddItemToCartDto {
   @IsNumber()
   quantity: number
 }
+export class DeleteItemToCartDto {
+  @IsNotEmpty()
+  @IsNumber()
+  @IsAlreadyExist('items', 'id')
+  @IsAlreadyExist('cart_item', 'itemId')
+  itemId: number
+}
+
+export class IncrementItemToCartDto extends DeleteItemToCartDto {
+  @IsOptional()
+  @IsNumber()
+  quantity: number
+}

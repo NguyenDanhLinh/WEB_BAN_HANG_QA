@@ -6,7 +6,7 @@ import { CreateUserDto, UserLoginDto } from 'dtos/users.dto'
 import { AdminMiddleware } from '@middlewares/checkAdmin.middleware'
 import CartServices from '@services/cart.service'
 import { UserMiddleware } from '@middlewares/checkUser.middleware'
-import { AddItemToCartDto } from 'dtos/cart.dto'
+import { AddItemToCartDto, DeleteItemToCartDto, IncrementItemToCartDto } from 'dtos/cart.dto'
 import { RequestWithUser } from '@interfaces/auth.interface'
 import { PaginationQueryDto } from 'dtos/pagination.dto'
 import { GetPagination } from '@decorators/get.pagination.decorator'
@@ -42,6 +42,32 @@ export class CartController extends BaseController {
     @Res() res: Response,
   ) {
     const result = await this.cartServices.getListItemInCart(pagination, req.user.id)
+
+    return this.responseSuccess(result, 'Success', res)
+  }
+
+  @UseBefore(UserMiddleware)
+  @UseBefore(validationMiddleware(DeleteItemToCartDto, 'body'))
+  @Post('/delete-item')
+  async deleteItemToCart(
+    @Body() body: DeleteItemToCartDto,
+    @Req() req: RequestWithUser,
+    @Res() res: any,
+  ) {
+    const result = await this.cartServices.deleteItemToCart(body, req.user.id)
+
+    return this.responseSuccess(result, 'Success', res)
+  }
+
+  @UseBefore(UserMiddleware)
+  @UseBefore(validationMiddleware(IncrementItemToCartDto, 'body'))
+  @Post('/increment-item')
+  async incrementItemToCart(
+    @Body() body: IncrementItemToCartDto,
+    @Req() req: RequestWithUser,
+    @Res() res: any,
+  ) {
+    const result = await this.cartServices.incrementItemToCart(body, req.user.id)
 
     return this.responseSuccess(result, 'Success', res)
   }
