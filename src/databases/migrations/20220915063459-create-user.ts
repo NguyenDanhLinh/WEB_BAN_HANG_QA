@@ -54,6 +54,13 @@ module.exports = {
         unique: true,
       },
 
+      verify: {
+        type: Sequelize.BOOLEAN,
+        field: 'verify',
+        allowNull: false,
+        defaultValue: false,
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

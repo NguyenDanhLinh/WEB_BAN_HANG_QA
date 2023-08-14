@@ -53,3 +53,9 @@ export class ReceiveVoucherDto {
   @IsAlreadyExist('voucher', 'id')
   voucherId: number
 }
+
+export class VerifyEmailDto {
+  @IsNotEmpty()
+  @IsString()
+  token: string
+}

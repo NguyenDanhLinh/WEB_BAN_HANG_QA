@@ -35,7 +35,10 @@ class FlashSaleServices {
 
     const transaction = await DB.sequelize.transaction()
 
-    const user = await this.userRepository.getAll({ attributes: ['email'] })
+    const user = await this.userRepository.getAll({
+      where: { verify: true },
+      attributes: ['email'],
+    })
 
     const listEmail = user.map((obj) => obj.email)
 
