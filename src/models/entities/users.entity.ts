@@ -46,6 +46,9 @@ export default class User extends Model<User> {
   @Column
   email!: string
 
+  @Column
+  verify!: boolean
+
   @HasMany(() => UserVoucher, 'userId')
   userVoucher: UserVoucher[]
 

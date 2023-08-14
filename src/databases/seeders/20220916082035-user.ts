@@ -10,6 +10,7 @@ const users = [
     phone_number: '032932311',
     address: 'ba vi',
     email: 'nguyendanhlinh2001@gmail.com',
+    verify: true,
   },
 ]
 
