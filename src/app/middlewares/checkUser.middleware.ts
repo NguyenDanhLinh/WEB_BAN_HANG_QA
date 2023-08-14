@@ -23,6 +23,10 @@ export class UserMiddleware implements ExpressMiddlewareInterface {
 
       const dataUser = await userRepository.findById(userId)
 
+      if (!dataUser.verify) {
+        return next(new HttpException(401, 'Not verify email'))
+      }
+
       if (!dataUser) {
         return next(new HttpException(401, 'Not user'))
       }

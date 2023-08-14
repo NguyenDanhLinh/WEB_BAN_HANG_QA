@@ -11,6 +11,7 @@ import UserVoucherRepository from '@repositories/user_voucher.repository'
 import VoucherRepository from '@repositories/voucher.repository'
 import DB from '@models/index'
 import { LoggingException } from '@exceptions/index'
+import { MailService } from '@common/services/mail.service'
 
 @Service()
 class UserServices {
@@ -18,6 +19,7 @@ class UserServices {
     protected userRepository: UserRepository,
     protected cronServices: CronServices,
     protected userVoucherRepository: UserVoucherRepository,
+    protected mailService: MailService,
     protected voucherRepository: VoucherRepository,
   ) {}
 
@@ -25,20 +27,43 @@ class UserServices {
     return this.userRepository.getAll()
   }
 
+  async createMailVerify(email: string) {
+    const tokenVerify = jwt.sign({ email: email }, env.auth.jwtSecret)
+
+    const subject = `To use your account, please verify your email at: http://localhost:3000/api/v1/user/verify-email?token=${tokenVerify}`
+
+    await this.mailService
+      .from(env.mail.email)
+      .to(email)
+      .html(subject)
+      .send()
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  async verifyEmail(token: string) {
+    const dataJwt: any = jwt.verify(token, process.env.JWT_SECRET)
+
+    return this.userRepository.update({ verify: true }, { where: { email: dataJwt.email } })
+  }
+
   async createUser(body: CreateUserInterface) {
     body.password = await hash(body.password, 10)
+
+    await this.createMailVerify(body.email)
 
     return this.userRepository.create(body)
   }
 
   async userLogin(body: UserLoginInterface) {
     const user = await this.userRepository.findByCondition({
-      where: { userName: body.userName },
+      where: { userName: body.userName, verify: true },
       raw: true,
     })
 
     if (!user || !bcrypt.compareSync(body.password, user.password)) {
-      throw new HttpException(400, 'wrong username or password')
+      throw new HttpException(400, 'wrong username or password or not verify email')
     }
 
     return jwt.sign({ id: user.id }, env.auth.jwtSecret)
