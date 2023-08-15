@@ -27,7 +27,7 @@ export class UpdateCategoryDto {
   @IsString()
   name: string
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   img: string
 }

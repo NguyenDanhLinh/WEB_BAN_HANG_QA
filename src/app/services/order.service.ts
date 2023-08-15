@@ -59,6 +59,8 @@ class OrderServices {
       voucher = userVoucher.voucher
 
       userVoucher = this.checkTimeVoucher(voucher.startDate) ? userVoucher : null
+
+      voucher = userVoucher ? voucher : null
     }
 
     let totalPrice = 0
@@ -152,6 +154,8 @@ class OrderServices {
       }
 
       await transaction.commit()
+
+      return order
     } catch (error) {
       await transaction.rollback()
 
