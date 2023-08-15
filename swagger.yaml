@@ -13,6 +13,34 @@ paths:
         '200':
           description: Thành công. Trả về danh sách người dùng.
 
+  /user/create:
+    post:
+      summary: Người dùng đăng kí
+      tags:
+        - Users
+      description: Người dùng đăng kí
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                password:
+                  type: string
+                phoneNumber:
+                  type: string
+                address:
+                  type: string
+                email:
+                  type: string
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
   /user/login:
     post:
       summary: Người dùng đăng nhập
@@ -34,6 +62,232 @@ paths:
       responses:
         '201':
           description: Thành công. Trả về jwt.
+
+  /user/receive-voucher:
+    post:
+      summary: Người dùng nhận voucher
+      tags:
+        - Users
+      description: Người dùng nhận voucher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                voucherId:
+                  type: number
+              required: # Không cần xác định trường required ở đây
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /user/verify-email:
+    get:
+      summary: Người dùng verify email
+      tags:
+        - Users
+      description: sau khi đăng kí tài khoản. Người dùng cần verify email
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: false
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /upload/img:
+    post:
+      summary: upload image
+      tags:
+        - Upload
+      description: upload image
+      requestBody:
+        required: true
+        content:
+          multipart/form-data: # Xác định kiểu dữ liệu là multipart/form-data
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary # Xác định kiểu dữ liệu là binary (dành cho tệp)
+              required:
+                - file
+      responses:
+        '200':
+          description: Thành công. Trả về url image trên filebase.
+
+  /category/create:
+    post:
+      summary: Admin tạo category
+      tags:
+        - Categories
+      description: Admin tạo category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                img:
+                  type: string
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /category/update:
+    post:
+      summary: Admin sửa category
+      tags:
+        - Categories
+      description: Admin sửa category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                name:
+                  type: string
+                img:
+                  type: string
+              required:
+                - id
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /category/list:
+    get:
+      summary: Lấy danh sách category
+      tags:
+        - Categories
+      description: Lấy danh sách các category theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về danh sách category.
+
+  /category/delete:
+    post:
+      summary: Admin xóa category
+      tags:
+        - Categories
+      description: Admin xóa category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /items/create:
+    post:
+      summary: Admin tạo item
+      tags:
+        - Items
+      description: Admin tạo item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                inputPrice:
+                  type: string
+                outputPrice:
+                  type: string
+                weight:
+                  type: string
+                description:
+                  type: string
+                inventoryNumber:
+                  type: number
+                categoryId:
+                  type: number
+                imgDetail:
+                  type: string
+                avatar:
+                  type: string
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /items/update:
+    post:
+      summary: Admin sửa item
+      tags:
+        - Items
+      description: Admin sửa item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                name:
+                  type: string
+                outputPrice:
+                  type: string
+                description:
+                  type: string
+                inventoryNumber:
+                  type: number
+                imgDetail:
+                  type: string
+                avatar:
+                  type: string
+              required:
+                - id
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
 
   /items/list:
     get:
@@ -65,3 +319,437 @@ paths:
       responses:
         '200':
           description: Thành công. Trả về danh sách sản phẩm.
+
+  /items/delete:
+    post:
+      summary: Admin xóa item
+      tags:
+        - Items
+      description: Admin xóa item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itemId:
+                  type: number
+              required:
+                - itemId
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /voucher/create:
+    post:
+      summary: Admin tạo voucher
+      tags:
+        - Voucher
+      description: Admin tạo voucher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                percent:
+                  type: number
+                moneyReduced:
+                  type: string
+                startDate:
+                  type: string
+                  format: date-time
+                endDate:
+                  type: string
+                  format: date-time
+                inventoryNumber:
+                  type: number
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /voucher/update:
+    post:
+      summary: Admin sửa voucher
+      tags:
+        - Voucher
+      description: Admin sửa voucher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                voucherId:
+                  type: number
+                name:
+                  type: string
+                percent:
+                  type: number
+                moneyReduced:
+                  type: string
+                startDate:
+                  type: string
+                  format: date-time
+                endDate:
+                  type: string
+                  format: date-time
+                inventoryNumber:
+                  type: number
+              required:
+                - voucherId
+                - endDate
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /voucher/list:
+    get:
+      summary: Lấy danh sách voucher
+      tags:
+        - Voucher
+      description: Lấy danh sách các voucher theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về danh sách voucher.
+
+  /voucher/list-by-user:
+    get:
+      summary: Lấy danh sách voucher của User
+      tags:
+        - Voucher
+      description: Lấy danh sách các voucher của User theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về danh sách voucher của User.
+
+  /carts/add-item:
+    post:
+      summary: user thêm sản phẩm vào cart
+      tags:
+        - Carts
+      description: user thêm sản phẩm vào cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itemId:
+                  type: number
+                quantity:
+                  type: number
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /carts/list-item:
+    get:
+      summary: Lấy danh sách item trong cart của User
+      tags:
+        - Carts
+      description: Lấy danh sách item trong cart của User theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về danh sách item trong cart của User của User.
+
+  /carts/delete-item:
+    post:
+      summary: user xóa item trong cart
+      tags:
+        - Carts
+      description: user xóa item trong cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itemId:
+                  type: number
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /carts/increment-item:
+    post:
+      summary: user tăng số lượng item trong cart
+      tags:
+        - Carts
+      description: user tăng số lượng item trong cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itemId:
+                  type: number
+                quantity:
+                  type: number
+              required:
+                - itemId
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /flash-sale/create:
+    post:
+      summary: Admin tạo flash sale
+      tags:
+        - Flash_sale
+      description: Admin tạo flash sale
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startDate:
+                  type: string
+                  format: date-time
+                endDate:
+                  type: string
+                  format: date-time
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      itemId:
+                        oneOf:
+                          - type: string
+                          - type: number
+                      quantity:
+                        oneOf:
+                          - type: string
+                          - type: number
+                      percent:
+                        oneOf:
+                          - type: string
+                          - type: number
+                      moneyReduced:
+                        oneOf:
+                          - type: string
+                          - type: number
+
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /flash-sale/get:
+    get:
+      summary: Lấy thông tin flash sale
+      tags:
+        - Flash_sale
+      description: Lấy thông tin flash sale theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: id
+          schema:
+            type: number
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về danh sách item trong cart của User.
+
+  /orders/create:
+    post:
+      summary: user tạo order
+      tags:
+        - Orders
+      description: user tạo order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                voucherId:
+                  type: number
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      itemId:
+                        oneOf:
+                          - type: string
+                          - type: number
+                      quantity:
+                        oneOf:
+                          - type: string
+                          - type: number
+              required:
+      responses:
+        '201':
+          description: Thành công. Trả về Success.
+
+  /orders/get:
+    get:
+      summary: Lấy thông tin order
+      tags:
+        - Orders
+      description: Lấy thông tin order theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: id
+          schema:
+            type: number
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về order.
+
+  /orders/get-by-user:
+    get:
+      summary: Lấy thông tin order của user
+      tags:
+        - Orders
+      description: Lấy thông tin order của user theo parameters truyền vào
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: id
+          schema:
+            type: number
+          required: false
+      responses:
+        '200':
+          description: Thành công. Trả về order của user.

@@ -111,7 +111,13 @@ class App {
         ],
         tags: [
           { name: 'Users', description: 'API for managing users' },
+          { name: 'Upload', description: 'API for managing upload' },
+          { name: 'Categories', description: 'API for managing Categories' },
           { name: 'Items', description: 'API for managing items' },
+          { name: 'Voucher', description: 'API for managing voucher' },
+          { name: 'Carts', description: 'API for managing carts' },
+          { name: 'Flash_sale', description: 'API for managing flash_sale' },
+          { name: 'Orders', description: 'API for managing orders' },
         ],
       },
       apis: ['swagger.yaml'],

@@ -59,9 +59,9 @@ export class UsersController extends BaseController {
   @Get('/verify-email')
   @UseBefore(validationMiddleware(VerifyEmailDto, 'query'))
   async verifyEmail(@PaginationQueryParams() params: VerifyEmailDto, @Res() res: Response) {
-    const result = await this.userServices.verifyEmail(params.token)
+    await this.userServices.verifyEmail(params.token)
 
-    return this.responseSuccess(result, 'Success', res)
+    return this.responseSuccess([], 'Success', res)
   }
 }
 

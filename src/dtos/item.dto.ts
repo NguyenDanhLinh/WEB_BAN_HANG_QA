@@ -3,6 +3,7 @@ import { IsAlreadyExist } from '@decorators/is.exist.decorator'
 import { isValidPhoneNumber } from '@decorators/is.phoneNumber.decorator'
 import { IsNotExist } from '@decorators/isNot.exist.decorator'
 import { IsNotEmpty, IsNumber, IsEnum, IsString, IsOptional } from 'class-validator'
+import { Transform, Type, TransformFnParams } from 'class-transformer'
 
 export class CreateItemDto {
   @IsNotEmpty()
@@ -76,8 +77,9 @@ export class UpdateItemDto {
 
 export class DeleteItemDto {
   @IsNotEmpty()
-  @IsString()
+  @IsNumber()
   @IsAlreadyExist('items', 'id')
   @IsNotExist('order_item', 'itemId')
+  @Type(() => Number)
   itemId: number
 }
